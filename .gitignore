@@ -1,3 +1,8 @@
+# Folder & File
+bk_ml_basic_data/
+*.wav
+*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

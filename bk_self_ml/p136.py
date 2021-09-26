@@ -1,3 +1,4 @@
+from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import train_test_split
@@ -17,7 +18,6 @@ perch_weight = np.array([5.9, 32.0, 40.0, 51.5, 70.0, 100.0, 78.0, 80.0, 85.0, 8
                          850.0, 900.0, 1015.0, 820.0, 1100.0, 1000.0, 1100.0, 1000.0,
                          1000.0])
 
-
 # 훈련 세트와 테스트 세트로 나눕니다
 train_input, test_input, train_target, test_target = train_test_split(
     perch_length, perch_weight, random_state=42)
@@ -26,25 +26,30 @@ train_input, test_input, train_target, test_target = train_test_split(
 train_input = train_input.reshape(-1, 1)
 test_input = test_input.reshape(-1, 1)
 
-# k-최근접 이웃 회귀 모델
-knr = KNeighborsRegressor(n_neighbors=3)
-
+# 선형 회귀 모델
+lr = LinearRegression()
 # 훈련
-knr.fit(train_input, train_target)
+lr.fit(train_input, train_target)
 
-# 50cm 농어의 무게
-print(knr.predict([[50]]))
-# 100cm 농어의 무게
-print(knr.predict([[100]]))
+# 50cm 농어에 대한 예측
+print(lr.predict([[50]]))
 
-# 50cm 농어의 이웃
-distances, indexes = knr.kneighbors([[50]])
-# 훈련 세트의 산점도
+# 100cm 농어에 대한 예측
+print(lr.predict([[100]]))
+
+# y = ax + b
+print("a =", lr.coef_)
+print("b =", lr.intercept_)
+
+# 훈련 세트의 산점도를 그립니다
 plt.scatter(train_input, train_target)
-# 이웃 샘플
-plt.scatter(train_input[indexes], train_target[indexes], marker='D')
+# 15에서 50까지 1차 방정식 그래프를 그립니다
+plt.plot([15, 50], [15*lr.coef_+lr.intercept_, 50*lr.coef_+lr.intercept_])
 # 50cm 농어 데이터
-plt.scatter(100, 1033, marker='^')
+plt.scatter(50, 1241.8, marker='^')
 plt.xlabel('length')
 plt.ylabel('weight')
 plt.show()
+
+print(lr.score(train_input, train_target))
+print(lr.score(test_input, test_target))

@@ -1,4 +1,4 @@
-# 확률적 경사 하강법
+ # 확률적 경사 하강법
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,13 +26,12 @@ test_scaled = ss.transform(test_input)
 
 sc = SGDClassifier(loss='log', max_iter=10, random_state=42)
 sc.fit(train_scaled, train_target)
-
-print("train :", sc.score(train_scaled, train_target))
-print("test :", sc.score(test_scaled, test_target))
+print("1 train :", sc.score(train_scaled, train_target))
+print("1 test :", sc.score(test_scaled, test_target))
 
 sc.partial_fit(train_scaled, train_target)
-print(sc.score(train_scaled, train_target))
-print(sc.score(test_scaled, test_target))
+print("2 train :", sc.score(train_scaled, train_target))
+print("2 test :", sc.score(test_scaled, test_target))
 
 # 에포크와 과대/과소적합
 
@@ -51,16 +50,17 @@ plt.plot(train_score)
 plt.plot(test_score)
 plt.xlabel('epoch')
 plt.ylabel('accuracy')
-plt.show()
+#plt.show()
 
+# max_iter = 100
 sc = SGDClassifier(loss='log', max_iter=100, tol=None, random_state=42)
 sc.fit(train_scaled, train_target)
+print("3 train :", sc.score(train_scaled, train_target))
+print("3 test :", sc.score(test_scaled, test_target))
 
-print(sc.score(train_scaled, train_target))
-print(sc.score(test_scaled, test_target))
-
+# logg = 'hinge'
 sc = SGDClassifier(loss='hinge', max_iter=100, tol=None, random_state=42)
 sc.fit(train_scaled, train_target)
 
-print(sc.score(train_scaled, train_target))
-print(sc.score(test_scaled, test_target))
+print("4 train :", sc.score(train_scaled, train_target))
+print("4 test :", sc.score(test_scaled, test_target))

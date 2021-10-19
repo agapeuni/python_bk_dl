@@ -1,4 +1,3 @@
-
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import cross_validate
 import numpy as np

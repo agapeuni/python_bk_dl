@@ -77,7 +77,6 @@ print("loss = ", loss)
 print("accuracy = ", accuracy)
 
 
-
 # 모델 예측
 preds = model.predict(x_test)
 # 예측값 출력

@@ -36,7 +36,7 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy', metrics='accuracy')
 
 # 모델 훈련
-history = model.fit(x_train, y_train, epochs=10)
+history = model.fit(x_train, y_train, epochs=5)
 
 # 모델 평가
 loss, accuracy = model.evaluate(x_test, y_test)
@@ -44,11 +44,13 @@ print("loss = ", loss)
 print("accuracy = ", accuracy)
 
 # 2개 테스트 이미지
-test_batch = x_test[:1]
+test_batch = x_test[:2]
+
 
 # 모델 예측
 preds = model.predict(test_batch)
+
 # 예측값 출력
 print("preds =", preds)
-print(np.argmax[preds[0]])
-print(np.argmax[preds[1]])
+print(np.argmax(preds[0]))
+print(np.argmax(preds[1]))

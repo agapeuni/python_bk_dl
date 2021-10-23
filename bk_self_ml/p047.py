@@ -17,32 +17,36 @@ smelt_weight = [6.7, 7.5, 7.0, 9.7, 9.8, 8.7,
                 10.0, 9.9, 9.8, 12.2, 13.4, 12.2, 19.7, 19.9]
 
 
+# 도미와 빙어를 그래프로 표시
 plt.scatter(bream_length, bream_weight)
 plt.scatter(smelt_length, smelt_weight)
 plt.xlabel('length')
 plt.ylabel('weight')
-# plt.show()
+plt.show()
 
+
+# 하나의 리스트로 병합
 length = bream_length + smelt_length
 weight = bream_weight + smelt_weight
 
 # 2차원 리스트로 변환
 fish_data = [[l, w] for l, w in zip(length, weight)]
-print(fish_data)
+print("fish_data =", fish_data)
 
-# 정답 데이터 생성
+# 정답 데이터 생성 (1:도미, 0:빙어)
 fish_target = [1]*35 + [0]*14
-print(fish_target)
+print("fish_target =", fish_target)
 
+########################
 # K 최근접 이웃 알고리즘
 kn = KNeighborsClassifier()
 
 # 훈련
 kn.fit(fish_data, fish_target)
 
-# 모델 평가
+# 평가
 s = kn.score(fish_data, fish_target)
-print(s)
+print("score =", s)
 
 plt.scatter(bream_length, bream_weight)
 plt.scatter(smelt_length, smelt_weight)
@@ -54,10 +58,10 @@ plt.show()
 
 # 예측 (1: 도미, 0: 빙어)
 p = kn.predict([[30, 600], [20, 30]])
-print(p)
+print("predict =", p)
 
 # fish_data
-# print(kn._fit_X)
+print("kn._fit_X =", kn._fit_X)
 
 # fish_target
-# print(kn._y)
+print("kn._y = ", kn._y)

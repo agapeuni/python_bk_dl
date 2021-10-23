@@ -9,6 +9,7 @@ perch_length = np.array([8.4, 13.7, 15.0, 16.2, 17.4, 18.0, 18.7, 19.0, 19.6, 20
                          27.5, 28.0, 28.7, 30.0, 32.8, 34.5, 35.0, 36.5, 36.0, 37.0, 37.0,
                          39.0, 39.0, 39.0, 40.0, 40.0, 40.0, 40.0, 42.0, 43.0, 43.0, 43.5,
                          44.0])
+
 perch_weight = np.array([5.9, 32.0, 40.0, 51.5, 70.0, 100.0, 78.0, 80.0, 85.0, 85.0, 110.0,
                          115.0, 125.0, 130.0, 120.0, 120.0, 130.0, 135.0, 110.0, 130.0,
                          150.0, 145.0, 150.0, 170.0, 225.0, 145.0, 188.0, 180.0, 197.0,
@@ -26,6 +27,8 @@ train_input, test_input, train_target, test_target = train_test_split(
 train_input = train_input.reshape(-1, 1)
 test_input = test_input.reshape(-1, 1)
 
+
+########################
 # k-최근접 이웃 회귀 모델
 knr = KNeighborsRegressor(n_neighbors=3)
 
@@ -34,15 +37,19 @@ knr.fit(train_input, train_target)
 
 # 50cm 농어의 무게
 print(knr.predict([[50]]))
+
 # 100cm 농어의 무게
 print(knr.predict([[100]]))
 
 # 50cm 농어의 이웃
 distances, indexes = knr.kneighbors([[50]])
+
 # 훈련 세트의 산점도
 plt.scatter(train_input, train_target)
+
 # 이웃 샘플
 plt.scatter(train_input[indexes], train_target[indexes], marker='D')
+
 # 50cm 농어 데이터
 plt.scatter(100, 1033, marker='^')
 plt.xlabel('length')

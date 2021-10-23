@@ -1,8 +1,6 @@
-from sklearn.utils import validation
+import numpy as np
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
-
-import matplotlib.pyplot as plt
 
 (train_input, train_target), (test_input, test_target) = \
     keras.datasets.fashion_mnist.load_data()
@@ -23,17 +21,20 @@ def model_fn(a_layer=None):
     return model
 
 
-# 검증 손실
-model = model_fn()
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics='accuracy')
-history = model.fit(train_scaled, train_target, epochs=20,
-                    verbose=0, validation_data=(val_scaled, val_target))
+model = model_fn(keras.layers.Dropout(0.3))
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
+              metrics='accuracy')
+
+history = model.fit(train_scaled, train_target, epochs=10, verbose=0,
+                    validation_data=(val_scaled, val_target))
+
+# 모델 저장과 복원
+model.save_weights('model-weights.h5')
+model.save('model-whole.h5')
 
 
-# 훈련 손실과 검증 손실을 한 그래프에 표시
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.legend(['train', 'val'])
-plt.show()
+val_labels = np.argmax(model.predict(val_scaled), axis=-1)
+print(np.mean(val_labels == val_target))
+
+model = keras.models.load_model('model-whole.h5')
+model.evaluate(val_scaled, val_target)

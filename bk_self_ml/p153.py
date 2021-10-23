@@ -8,8 +8,9 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 
-df = pd.read_csv('https://bit.ly/perch_csv_data')
+df = pd.read_csv('bk_self_ml/data/perch_full.csv')
 perch_full = df.to_numpy()
+print(perch_full)
 
 perch_weight = np.array(
     [5.9, 32.0, 40.0, 51.5, 70.0, 100.0, 78.0, 80.0, 85.0, 85.0,
@@ -23,6 +24,7 @@ perch_weight = np.array(
 
 train_input, test_input, train_target, test_target = train_test_split(
     perch_full, perch_weight, random_state=42)
+
 
 """
 poly = PolynomialFeatures()
@@ -44,13 +46,15 @@ n = poly.get_feature_names()
 print("n =", n)
 
 test_poly = poly.transform(test_input)
-# print(test_poly)
+print(test_poly)
 
 
+# 특성이 늘어나면 선형 회귀의 능력은 향상됨
 lr = LinearRegression()
 lr.fit(train_poly, train_target)
 print("train : ", lr.score(train_poly, train_target))
 print("test : ", lr.score(test_poly, test_target))
+
 
 # 다중 회귀 모델
 poly = PolynomialFeatures(degree=5, include_bias=False)
@@ -63,11 +67,13 @@ lr.fit(train_poly, train_target)
 print("train : ", lr.score(train_poly, train_target))
 print("test : ", lr.score(test_poly, test_target))
 
+
 # 표준화
 ss = StandardScaler()
 ss.fit(train_poly)
 train_scaled = ss.transform(train_poly)
 test_scaled = ss.transform(test_poly)
+
 
 # 규제_릿지
 ridge = Ridge()
@@ -91,7 +97,8 @@ plt.plot(np.log10(alpha_list), train_score)
 plt.plot(np.log10(alpha_list), test_score)
 plt.xlabel('alpha')
 plt.ylabel('R^2')
-# plt.show()
+plt.show()
+
 
 # -1 =-> 0.1을 찾아냄
 ridge = Ridge(alpha=0.1)
@@ -99,6 +106,7 @@ ridge.fit(train_scaled, train_target)
 
 print("train : ", ridge.score(train_scaled, train_target))
 print("test : ", ridge.score(test_scaled, test_target))
+
 
 # 라쏘
 lasso = Lasso()
@@ -125,10 +133,11 @@ plt.xlabel('alpha')
 plt.ylabel('R^2')
 # plt.show()
 
+
+
 lasso = Lasso(alpha=10)
 lasso.fit(train_scaled, train_target)
 
 print("train : ", lasso.score(train_scaled, train_target))
 print("test : ", lasso.score(test_scaled, test_target))
-
 print(np.sum(lasso.coef_ == 0))
